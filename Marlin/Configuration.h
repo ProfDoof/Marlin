@@ -1539,16 +1539,18 @@
   #define PROBE_DEPLOY_FEEDRATE (133*60)  // (mm/min) Probe deploy speed
   #define PROBE_STOW_FEEDRATE   (133*60)  // (mm/min) Probe stow speed
 
-  #define MAG_MOUNTED_DEPLOY_1 { PROBE_DEPLOY_FEEDRATE, { 99, 0, 0.5 } }  // Move to side Dock & Attach probe
-  #define MAG_MOUNTED_DEPLOY_2 { PROBE_DEPLOY_FEEDRATE, { 28, 0, 0.5 } }  // Move probe off dock
-  #define MAG_MOUNTED_DEPLOY_3 { PROBE_DEPLOY_FEEDRATE, {  5, 0,  20 } }  // Extra move if needed
-  // #define MAG_MOUNTED_DEPLOY_4 { PROBE_DEPLOY_FEEDRATE, {   0,   0,  0 } }  // Extra move if needed
+  // Z going up, Z then XY
+  // Z going down, XY then Z
+  #define MAG_MOUNTED_DEPLOY_1 { PROBE_DEPLOY_FEEDRATE, { 100, 0,   4 } }  // Move beside the dock
+  #define MAG_MOUNTED_DEPLOY_2 { PROBE_DEPLOY_FEEDRATE, {  60, 0, 2.1 } }  // Move above dock, then down into the well
+  #define MAG_MOUNTED_DEPLOY_3 { PROBE_DEPLOY_FEEDRATE, {  10, 0, 2.1 } }  // Slide probe out of dock
+  #define MAG_MOUNTED_DEPLOY_4 { PROBE_DEPLOY_FEEDRATE, {  10, 0,  25 } }  // Extra move if needed
   // #define MAG_MOUNTED_DEPLOY_5 { PROBE_DEPLOY_FEEDRATE, {   0,   0,  0 } }  // Extra move if needed
-  #define MAG_MOUNTED_STOW_1   { PROBE_STOW_FEEDRATE,   { 60, 0,  20 } }  // Move to dock
-  #define MAG_MOUNTED_STOW_2   { PROBE_STOW_FEEDRATE,   { 28, 0, 0.5 } }  // Place probe beside remover
-  #define MAG_MOUNTED_STOW_3   { PROBE_STOW_FEEDRATE,   { 60, 0, 0.5 } }  // Side move to remove probe
-  #define MAG_MOUNTED_STOW_4   { PROBE_STOW_FEEDRATE,   { 60, 0,   5 } }  // Side move to remove probe
-  #define MAG_MOUNTED_STOW_5   { PROBE_STOW_FEEDRATE,   { 90, 0,   5 } }  // Extra move if needed
+  #define MAG_MOUNTED_STOW_1   { PROBE_STOW_FEEDRATE,   {  10, 0,  25 } }  // Move to left of dock
+  #define MAG_MOUNTED_STOW_2   { PROBE_STOW_FEEDRATE,   {  10, 0, 2.1 } }  // Place probe in remover
+  #define MAG_MOUNTED_STOW_3   { PROBE_STOW_FEEDRATE,   {  60, 0, 2.1 } }  // Side move to remove probe
+  #define MAG_MOUNTED_STOW_4   { PROBE_STOW_FEEDRATE,   { 100, 0,   4 } }  // Side move to remove probe
+  #define MAG_MOUNTED_STOW_5   { PROBE_STOW_FEEDRATE,   { 100, 0,  25 } }  // Extra move if needed
 #endif
 
 // Duet Smart Effector (for delta printers) - https://docs.duet3d.com/en/Duet3D_hardware/Accessories/Smart_Effector
@@ -1638,7 +1640,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -10, -10, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -46, -18, -10.56 }
 
 // Enable and set to use a specific tool for probing. Disable to allow any tool.
 #define PROBING_TOOL 0
@@ -1723,11 +1725,11 @@
  * Example: 'M851 Z-5' with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: 'M851 Z+1' with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   10 // (mm) Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // (mm) Z Clearance between probe points
+#define Z_CLEARANCE_DEPLOY_PROBE   20 // (mm) Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_BETWEEN_PROBES 10 // (mm) Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // (mm) Z Clearance between multiple probes
 #define Z_PROBE_ERROR_TOLERANCE     3 // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
-//#define Z_AFTER_PROBING           5 // (mm) Z position after probing is done
+#define Z_AFTER_PROBING            20 // (mm) Z position after probing is done
 
 #define Z_PROBE_LOW_POINT          -2 // (mm) Farthest distance below the trigger-point to go before stopping
 
@@ -1834,8 +1836,8 @@
 
 // @section homing
 
-//#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed. Also enable HOME_AFTER_DEACTIVATE for extra safety.
-//#define HOME_AFTER_DEACTIVATE   // Require rehoming after steppers are deactivated. Also enable NO_MOTION_BEFORE_HOMING for extra safety.
+#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed. Also enable HOME_AFTER_DEACTIVATE for extra safety.
+#define HOME_AFTER_DEACTIVATE   // Require rehoming after steppers are deactivated. Also enable NO_MOTION_BEFORE_HOMING for extra safety.
 
 /**
  * Set Z_IDLE_HEIGHT if the Z-Axis moves on its own when steppers are disabled.
@@ -1891,7 +1893,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 249
+#define Z_MAX_POS 250
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
